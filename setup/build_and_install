@@ -1,5 +1,4 @@
 #!/bin/bash +x
-
 pushd setup
 ./configure
 make setup
