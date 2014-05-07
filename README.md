@@ -45,10 +45,6 @@ Grab this repo.
 Use -ljnxc when building your project
 
 ````
-####Flags
-
--DRELEASE (Sets library for release mode optimisations) 
-
 ##Examples
 
 Sending message over network
