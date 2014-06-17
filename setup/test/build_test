@@ -1,0 +1,9 @@
+#!/bin/bash
+COMPILER=gcc
+BUILDDIR=../build
+OPTS="-pthread -w -rdynamic"
+infile=$1
+outname=${infile:0:${#infile}-2}
+
+run="${COMPILER} ${infile} ${BUILDDIR}/*.c -I ${BUILDDIR} -o ${outname} ${OPTS}"
+`$run`
