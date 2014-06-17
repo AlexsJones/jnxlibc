@@ -426,7 +426,7 @@ int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, ud
 		if(bytesread == -1 ) {
 			perror("recvfrom:");
 			fclose(fp);
-			return -1;
+			continue;
 		}
 		int len = ftell(fp);
 		rewind(fp);
