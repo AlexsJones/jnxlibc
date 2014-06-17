@@ -28,10 +28,25 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <stdlib.h>
+#include "jnxthread.h"
 #include "jnxlog.h"
 #include "jnxcheck.h"
 #include "jnxsocket.h"
 #define MAXBUFFER 1024
+
+typedef struct internal_thr_data { 
+	jnx_socket *s;
+	uint8_t *payload;
+	size_t bytesread;
+	int (*callback)(uint8_t *p, size_t br, jnx_socket *s);
+}internal_thr_data;
+
+void* internal_threaded_responder(void *args) {
+	internal_thr_data *thr_data = args;
+	JNXCHECK(thr_data);
+	thr_data->callback(thr_data->payload,thr_data->bytesread,thr_data->s);
+	return 0;
+}
 jnx_socket *create_socket(unsigned int type,unsigned int addrfamily) {
 	JNXCHECK(addrfamily);
 	JNXCHECK(type);
@@ -341,8 +356,9 @@ int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tc
 		memset(buffer,0,MAXBUFFER);
 		FILE *fp = tmpfile();
 		size_t bytesread = read(recfd,buffer,MAXBUFFER);
-		fwrite(buffer,sizeof(uint8_t),bytesread,fp);
-
+		if(bytesread > 0) {
+			fwrite(buffer,sizeof(uint8_t),bytesread,fp);
+		}
 		while(bytesread > 0) {
 			memset(buffer,0,MAXBUFFER);
 			bytesread = read(recfd,buffer,MAXBUFFER);
@@ -361,10 +377,12 @@ int jnx_socket_tcp_listen(jnx_socket *s, char* port, ssize_t max_connections, tc
 		fread(out,sizeof(uint8_t),len,fp);
 		fclose(fp);
 
-		int ret = 0;
-		if((ret = c(out,len,s)) != 0) {
-			return 0;
-		}
+		internal_thr_data thr_data;
+		thr_data.payload = out;
+		thr_data.bytesread = len;
+		thr_data.s = s;
+		thr_data.callback = c;
+		jnx_thread_create_disposable(internal_threaded_responder,&thr_data);
 	}
 	return 0;
 }
@@ -405,30 +423,23 @@ int jnx_socket_udp_listen(jnx_socket *s, char* port, ssize_t max_connections, ud
 		memset(buffer,0,MAXBUFFER);
 		FILE *fp = tmpfile();
 		size_t bytesread = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
-		fwrite(buffer,sizeof(uint8_t),bytesread,fp);
-
-		while(bytesread > 0) {
-			memset(buffer,0,MAXBUFFER);
-			bytesread = recvfrom(s->socket,buffer,MAXBUFFER,0,(struct sockaddr *)&their_addr,(socklen_t*)&their_len);
-			if(bytesread == -1) {
-				perror("recvfrom:");
-				fclose(fp);
-				return -1;
-			}
-			if(bytesread > 0) {
-				fwrite(buffer,sizeof(uint8_t),bytesread,fp);
-			}	
-			int len = ftell(fp);
-			rewind(fp);
-			uint8_t *out = calloc(len + 1, sizeof(uint8_t));
-			fread(out,sizeof(uint8_t),len,fp);
+		if(bytesread == -1 ) {
+			perror("recvfrom:");
 			fclose(fp);
-
-			int ret = 0;
-			if((ret = c(out,len,s)) != 0) {
-				return 0;
-			}
+			continue;
 		}
+		int len = ftell(fp);
+		rewind(fp);
+		uint8_t *out = calloc(len + 1, sizeof(uint8_t));
+		fread(out,sizeof(uint8_t),len,fp);
+		fclose(fp);
+
+		internal_thr_data thr_data;
+		thr_data.payload = out;
+		thr_data.bytesread = len;
+		thr_data.s = s;
+		thr_data.callback = c;
+		jnx_thread_create_disposable(internal_threaded_responder,&thr_data);
 	}
-	return 0;
+return 0;
 }
