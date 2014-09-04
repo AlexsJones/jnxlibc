@@ -7,9 +7,7 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -19,7 +17,10 @@
       <header>
         <h1>Jnxlibc</h1>
         <p>Powerful, light, feature-rich C library</p>
+
         <p class="view"><a href="https://github.com/AlexsJones/jnxlibc">View the Project on GitHub <small>AlexsJones/jnxlibc</small></a></p>
+
+
         <ul>
           <li><a href="https://github.com/AlexsJones/jnxlibc/zipball/master">Download <strong>ZIP File</strong></a></li>
           <li><a href="https://github.com/AlexsJones/jnxlibc/tarball/master">Download <strong>TAR Ball</strong></a></li>
@@ -27,61 +28,79 @@
         </ul>
       </header>
       <section>
-        <p><img src="http://i.imgur.com/w6M1lJP.png" alt="jnx Icon"></p>
+        <h1>
+<a name="jnxlibc" class="anchor" href="#jnxlibc"><span class="octicon octicon-link"></span></a>jnxlibc</h1>
 
-<h1>
-<a name="-jnxlibc" class="anchor" href="#-jnxlibc"><span class="octicon octicon-link"></span></a> jnxlibc</h1>
+<p><a href="https://travis-ci.org/AlexsJones/jnxlibc.svg?branch=master"><img src="https://travis-ci.org/AlexsJones/jnxlibc.svg?branch=master" alt="Build Status"></a>
+<a href="http://img.shields.io/badge/license-GPLv3-green.svg"><img src="http://img.shields.io/badge/license-GPLv3-green.svg" alt="License"></a>
+<a href="http://img.shields.io/badge/development-active-green.svg"><img src="http://img.shields.io/badge/development-active-green.svg" alt="Dev"></a></p>
 
-<p><a href="https://travis-ci.org/AlexsJones/jnxlibc"><img src="https://travis-ci.org/AlexsJones/jnxlibc.png" alt="Build Status"></a></p>
+<blockquote>
+<p>A modern C library that provides a useful self contained API that has built in testing and just works.
+Covering a range of boilerplate code areas and low level networking; jnxlibc provides both a reliable systems library &gt;and tool for learning.</p>
+</blockquote>
 
-<p>Test driven C library for reliable networking, data structures and utility functionality.
-Constantly in development and refinement to make it as memory/thread safe as possible whilst maintaining
-no dependencies and low foot print.</p>
-
-<h4>
-<a name="for-a-solid-snapshot-of-the-library-check-out-the-releases" class="anchor" href="#for-a-solid-snapshot-of-the-library-check-out-the-releases"><span class="octicon octicon-link"></span></a>For a solid snapshot of the library check out the releases</h4>
-
-<p><a href="https://github.com/AlexsJones/jnxlibc/releases">https://github.com/AlexsJones/jnxlibc/releases</a></p>
+<p><a href="https://github.com/AlexsJones/jnxlibc/releases">Latest release</a></p>
 
 <h1>
 <a name="key-features" class="anchor" href="#key-features"><span class="octicon octicon-link"></span></a>Key features</h1>
 
 <ul>
-<li>Lightweight data structures (hash, list, vector, btree, stack, queue)</li>
-<li>Network socket implmentation supporting multiple transport and IPV4/IPV6</li>
-<li>Threading &amp; threadsafe data structure API</li>
+<li>Lightweight data structures with thread-safe API (hash, list, vector, btree, stack, queue) </li>
+<li>Socket implmentation supporting multiple transport and IPV4/IPV6 (Multicasting,Broadcast,Unicast) TCP/IP &amp; UDP</li>
+<li>Network utilities (get IP from hostname, resolve hostname from IP, interface to IP)</li>
+<li>Threading interface above POSIX (Ambition to extend x-platform)</li>
 <li>Signals &amp; Slots</li>
 <li>Interprocess communication</li>
 <li>Verbose terminal logging</li>
 <li>Easy to use file read/write functions</li>
 <li>Fast and easy base64 encoding/decoding</li>
 <li>Auto generated documentation and logical API</li>
+<li>Almost total test coverage (Unit tests/ Performance tests)</li>
+<li>Armv7 framework version available <a href="https://github.com/AlexsJones/jnxlibc_ios">Here</a>
+</li>
 </ul><h1>
 <a name="documentation--examples" class="anchor" href="#documentation--examples"><span class="octicon octicon-link"></span></a>Documentation &amp; Examples</h1>
 
 <ul>
+<li>First port of call: <a href="https://github.com/AlexsJones/jnxlibc/wiki/A-library-tour">Wiki</a>
+</li>
 <li>MAN  docs/man</li>
 <li>HTML docs/html (<a href="http://htmlpreview.github.io/?https://raw.github.com/AlexsJones/jnxlibc/master/docs/html/files.html">Here</a>)</li>
-<li>Examples of functionality in test suite.</li>
+<li><a href="setup/test">Loads of lovely tests in C!</a></li>
 <li>Code reviewing</li>
 </ul><h1>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
 
+<h3>
+<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies</h3>
+
+<pre><code>- GCC
+- CMake
+    - pthread library (included on OS/X and Linux)
+</code></pre>
+
 <p>Currently supported platforms:
 Linux distributions/OS X</p>
 
-<p>Arch linux users</p>
+<p>Default install location</p>
 
-<pre><code>yaourt jnxlibc 
+<pre><code>git clone git@github.com:AlexsJones/jnxlibc jnxlibc &amp;&amp; cd jnxlibc
+cmake .
+make
+sudo make install
 </code></pre>
 
-<p>Grab this repo.</p>
+<p>Custom install location</p>
 
-<pre><code>./setup/build_and_install
-
-Use -ljnxc when building your project
-
+<pre><code>git clone git@github.com:AlexsJones/jnxlibc jnxlibc &amp;&amp; cd jnxlibc
+cmake . -DCMAKE_INSTALL_PREFIX=/Users/alexjo/Projects/jnxlibc/build/ 
+make
+sudo make install
 </code></pre>
+
+<p>Use <code>-ljnxc</code> when building your project for shared library
+Use <code>-ljnxcs</code> for static library</p>
 
 <h4>
 <a name="flags" class="anchor" href="#flags"><span class="octicon octicon-link"></span></a>Flags</h4>
@@ -95,7 +114,7 @@ Use -ljnxc when building your project
 
 <div class="highlight highlight-C"><pre><span class="n">jnx_socket</span> <span class="o">*</span><span class="n">udp_sock</span> <span class="o">=</span> <span class="n">jnx_socket_udp_create</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">);</span>
 <span class="n">jnx_socket_udp_send</span><span class="p">(</span><span class="n">udp_sock</span><span class="p">,</span><span class="s">"host"</span><span class="p">,</span><span class="s">"port"</span><span class="p">,</span><span class="s">"message"</span><span class="p">,</span><span class="n">strlen</span><span class="p">(</span><span class="s">"message"</span><span class="p">));</span>
-<span class="n">jnx_socket_close</span><span class="p">(</span><span class="n">tcp_sock</span><span class="p">);</span>
+<span class="n">jnx_socket_close</span><span class="p">(</span><span class="n">udp_sock</span><span class="p">);</span>
 
 </pre></div>
 
@@ -140,12 +159,12 @@ Use -ljnxc when building your project
 
 </pre></div>
       </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/AlexsJones">AlexsJones</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
-    <footer>
-      <p>Project maintained by <a href="https://github.com/AlexsJones">AlexsJones</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    <script src="javascripts/scale.fix.js"></script>
     
   </body>
 </html>
