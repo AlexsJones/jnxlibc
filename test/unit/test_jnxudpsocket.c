@@ -5,7 +5,6 @@
 #include "jnx_udp_socket.h"
 #include "jnxthread.h"
 #include <assert.h>
-#include "jnxthread.h"
 #include <time.h>
 #include "jnxnetwork.h"
 #define TESTPORT "9092"
@@ -59,8 +58,8 @@ void fire_threaded_udp_packet_broadcast(char *port) {
 void fire_threaded_udp_packet_multicast(char *port) {
   jnx_thread_create_disposable(worker_multicast,port);
 }
-void test_udp_listener_callback(jnx_uint8 *payload,
-    jnx_size bytes_read, jnx_socket *s, jnx_int connected_socket,void *args){
+void test_udp_listener_callback(const jnx_uint8 *payload,
+    jnx_size bytes_read, void *args){
   JNX_LOG(NULL,"test_udp_listener_callback achieved");
   test_udp_listener_complete = 1;
 }
