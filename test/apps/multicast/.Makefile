@@ -1,7 +1,7 @@
 SRC=../../../src
 
 all: clean
-	gcc -o multicast \
+	gcc -DDEBUG -o multicast \
 		-I${SRC}/alg -I${SRC}/bug -I${SRC}/dat \
 		-I${SRC}/io -I${SRC}/ipc -I${SRC}/net \
 		-I${SRC}/sig -I${SRC}/sys -I${SRC}/thr \
@@ -9,7 +9,7 @@ all: clean
 		${SRC}/**/*.c *.c
 
 debug: clean
-	gcc -g -o multicast-debug \
+	gcc -DDEBUG -g -o multicast-debug \
 		-I${SRC}/alg -I${SRC}/bug -I${SRC}/dat \
 		-I${SRC}/io -I${SRC}/ipc -I${SRC}/net \
 		-I${SRC}/sig -I${SRC}/sys -I${SRC}/thr \

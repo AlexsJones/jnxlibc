@@ -17,6 +17,7 @@
  * =====================================================================================
  */
 #include <stdlib.h>
+#include <stdio.h>
 #include "jnx_udp_socket.h"
 #include "jnxthread.h"
 #include "jnxcheck.h"
@@ -41,7 +42,7 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-void test_udp_multicast(){
+void test_udp_multicast() {
   char *ip = calloc(16,sizeof(jnx_char));
   jnx_network_fetch_local_ipv4(ip,filter_local_ip_address);
   JNX_LOG(0,"Using IP => %s",ip);
@@ -58,8 +59,8 @@ void test_udp_multicast(){
   JNXCHECK(listener == NULL);
 }
 void test_udp_listener_callback(const jnx_uint8 *payload,
-    jnx_size bytes_read, void *args){
-  JNX_LOG(NULL,"test_udp_listener_callback achieved");
+    jnx_size bytes_read, void *args) {
+  JNX_LOG(0,"test_udp_listener_callback achieved");
   test_udp_listener_complete = 1;
 }
 void fire_threaded_udp_packet_multicast(char *port) {
