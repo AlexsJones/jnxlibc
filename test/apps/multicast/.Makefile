@@ -5,7 +5,7 @@ all: clean
 		-I${SRC}/alg -I${SRC}/bug -I${SRC}/dat \
 		-I${SRC}/io -I${SRC}/ipc -I${SRC}/net \
 		-I${SRC}/sig -I${SRC}/sys -I${SRC}/thr \
-		-lpthread \
+		-pthread -w -rdynamic \
 		${SRC}/**/*.c *.c
 
 debug: clean
@@ -13,7 +13,7 @@ debug: clean
 		-I${SRC}/alg -I${SRC}/bug -I${SRC}/dat \
 		-I${SRC}/io -I${SRC}/ipc -I${SRC}/net \
 		-I${SRC}/sig -I${SRC}/sys -I${SRC}/thr \
-		-lpthread \
+		-pthread -w -rdynamic \
 		${SRC}/**/*.c *.c
 
 clean:
