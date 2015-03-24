@@ -99,6 +99,17 @@ void test_contains() {
   JNXCHECK(jnx_vector_contains(vector,"GoodBye",vector_compare) == 0);
   jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
 }
+void test_get() {
+  JNX_LOG(NULL,"- test_get");
+  jnx_vector *vector = jnx_vector_create();
+  jnx_vector_insert(vector,"Hello");
+  JNXCHECK(jnx_vector_contains(vector,"Hello",vector_compare) == 1);
+  char *str = (char*)jnx_vector_get_at(vector,0);
+  JNXCHECK(strcmp("Hello",str) == 0);
+  char *str2 = (char*)jnx_vector_get_at(vector,0);
+  JNXCHECK(strcmp("Hello",str2) == 0);
+  jnx_term_printf_in_color(JNX_COL_GREEN, "  OK\n");
+}
 int main(int argc, char **argv) {
   JNX_LOG(NULL,"Running vector tests...\n");
   test_insert_position();
@@ -106,6 +117,7 @@ int main(int argc, char **argv) {
   test_sequential_insertion();
   test_complex_insertion();
   test_contains();
+  test_get();
   JNX_LOG(NULL,"Vector tests completed.\n");
   return 0;
 }
