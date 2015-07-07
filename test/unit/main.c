@@ -5,10 +5,11 @@
  * Distributed under terms of the MIT license.
  */
 #include "jnxlog.h"
-
+#include <unistd.h>
 int main(int argc, char **argv) {
 
   JNXLOG_CREATE("logger.conf");
+  sleep(1);
   JNXLOG(LDEBUG,"---------------------TEST test_jnxbtree----------------------");
   test_jnxbtree();
   JNXLOG(LDEBUG,"---------------------TEST test_jnxencoder--------------------");
