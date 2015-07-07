@@ -219,7 +219,30 @@ void jnx_network_fetch_local_ipv4(jnx_char *buffer, address_mapping filter) {
     struct sockaddr *ip = current->ifa_addr;
     if (ip->sa_family == AF_INET) {
       char *aip = inet_ntoa(((struct sockaddr_in *) ip)->sin_addr);
-      if (strcmp("127.0.0.1", aip) == 0) { // skip loopback interface
+      if (strcmp(AF_INET4_LOCALHOST, aip) == 0) { // skip loopback interface
+        current = current->ifa_next;
+        continue;
+      }
+      char *ip_str = inet_ntoa(((struct sockaddr_in *) filter(current))->sin_addr);
+      strncpy(buffer, ip_str, strlen(ip_str) + 1);
+      break;
+    }
+    current = current->ifa_next;
+  }
+  freeifaddrs(ifap);
+}
+void jnx_network_fetch_local_ipv6(jnx_char *buffer, address_mapping filter) {
+ struct ifaddrs *ifap = 0;
+  if (getifaddrs(&ifap) == -1) {
+    perror("getifaddrs");
+    exit(1);
+  }
+  struct ifaddrs *current = ifap;
+  while (0 != current) {
+    struct sockaddr *ip = current->ifa_addr;
+    if (ip->sa_family == AF_INET6) {
+      char *aip = inet_ntoa(((struct sockaddr_in *) ip)->sin_addr);
+      if (strcmp(AF_INET6_LOCALHOST, aip) == 0) { // skip loopback interface
         current = current->ifa_next;
         continue;
       }

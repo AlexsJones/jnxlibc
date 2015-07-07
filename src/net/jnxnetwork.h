@@ -61,7 +61,9 @@ extern "C" {
   typedef struct sockaddr*(*address_mapping)(struct ifaddrs *);
 
   void jnx_network_fetch_local_ipv4(jnx_char *buffer, address_mapping filter);
-/**
+
+  void jnx_network_fetch_local_ipv6(jnx_char *buffer, address_mapping filter);
+  /**
  * @brief Basic HTTP Protocols 
  */
 typedef enum JNX_HTTP_TYPE {
