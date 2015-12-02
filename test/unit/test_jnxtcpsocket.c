@@ -56,13 +56,13 @@ static void test_tcp_listener_ipv6() {
     jnx_socket_tcp_listener_create(TCPTESTPORT,AF_INET6,100);
   fire_threaded_tcp_packet_ipv6(TCPTESTPORT);
   int x = 0;
-  while(x < 5) {
+  while(x < 10) {
     jnx_socket_tcp_listener_tick(listener,test_tcp_listener_callback,NULL);
     if(test_tcp_listener_complete)break;
     ++x;
   }
   jnx_socket_tcp_listener_destroy(&listener);
-  JNXCHECK(test_tcp_listener_complete);
+  JNXCHECK(test_tcp_listener_complete == 1);
   JNXCHECK(listener == NULL);
 }
 static void test_blocking_listener_callback(const jnx_uint8 *payload, \
