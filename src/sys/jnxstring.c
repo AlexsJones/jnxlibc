@@ -21,9 +21,12 @@
 #include "jnxstring.h"
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
+#ifndef _WIN32 || _WIN64
+#include <unistd.h>|
+#endif
 #include <stdlib.h>
 #include "jnxcheck.h"
+
 jnx_char* jnx_string_joincreate(jnx_char* destination, jnx_char* append) {
   JNXCHECK(destination);
   JNXCHECK(append);

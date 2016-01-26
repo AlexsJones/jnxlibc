@@ -11,7 +11,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#ifndef _WIN32 || _WIN64
 #include <unistd.h>
+#include <dirent.h>
+#include <ftw.h>
+#include <libgen.h>
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -19,9 +24,12 @@ extern "C" {
 /*
  * In preparation for splitting out platform functions
  */
-#define JNX_OPEN open
-#define JNX_READ read
-#define JNX_CLOSE close
+#ifndef _WIN32 || _WIN64
+#define JNX_OPEN fopen
+#define JNX_READ fread
+#define JNX_CLOSE fclose
+#endif
+
   
   /**
    * @brief An jnx_int32ernal representation of the kvp node populated when 
@@ -78,8 +86,9 @@ extern "C" {
    *
    * @warning extremely powerful and can make unrepairable changes to your file system
    */
+#ifndef _WIN32 || _WIN64
   jnx_int32 jnx_file_recursive_delete(jnx_char* path, int32_t depth);
-
+#endif
   /**
    * @fn jnx_file_mktempdir(jnx_char *template, jnx_char **path) 
    * @brief Function to create a temporary directory on the given path

@@ -53,7 +53,12 @@ extern "C" {
   }jnx_vector3D;
 
   typedef size_t jnx_size;
+#ifdef _WIN32 || _WIN64
+  /* this is a cheat, it is not signed!*/
+  typedef size_t jnx_ssize;
+#else
   typedef ssize_t jnx_ssize;
+#endif
   typedef double jnx_double;
 #ifdef __cplusplus
 }

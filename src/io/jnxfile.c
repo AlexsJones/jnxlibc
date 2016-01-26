@@ -23,17 +23,16 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
-#include <dirent.h>
 #define __USE_XOPEN_EXTENDED
-#include <ftw.h>
-#include <libgen.h>
 #include <assert.h>
 #include "jnxlog.h"
 #include "jnxcheck.h"
+
+#define WINBUFFER 2048
+
 jnx_size jnx_file_read(jnx_char* path, jnx_char **buffer,jnx_char *flags) {
   JNXCHECK(path);
   JNXCHECK(buffer);
@@ -62,7 +61,12 @@ jnx_hashmap *jnx_file_read_kvp(jnx_char *path, jnx_size max_buffer, jnx_char *de
   if((file = fopen(path, "r+")) == NULL) {
     return NULL;
   }
+#ifndef _WIN32 || _WIN64
   jnx_char buffer[max_buffer];
+#else
+  jnx_char buffer[WINBUFFER];
+#endif
+ 
   memset(buffer,0,max_buffer);
   jnx_hashmap *map = jnx_hash_create(max_buffer);
 
@@ -108,6 +112,7 @@ jnx_int32 jnx_file_recursive_delete_callback(const jnx_char *fpath, const struct
   remove(fpath);
   return 0;
 }
+#ifndef _WIN32 || _WIN64
 jnx_int32 jnx_file_recursive_delete(jnx_char* path, int32_t depth) {
   JNXCHECK(path);
   JNXCHECK(depth);
@@ -117,9 +122,15 @@ jnx_int32 jnx_file_recursive_delete(jnx_char* path, int32_t depth) {
   }
   return 0;
 }
+#endif
 static jnx_int32 jnx_file_path_exists(jnx_char *path) {
   JNXCHECK(path);
-  jnx_char buffer[512]={};
+#ifndef _WIN32 || _WIN64
+  jnx_char buffer[512] = {};
+#else
+  jnx_char buffer[512];
+  memset(buffer, 0, 212);
+#endif
   if((getcwd(buffer,512)) == NULL){
     JNXLOG(LDEBUG,"jnx_file_path_exists: Unable to validate cwd\n");
     return 0;
@@ -151,7 +162,12 @@ jnx_int32 jnx_file_mktempdir(jnx_char *dirtemplate, jnx_char **path) {
   JNXCHECK(dirtemplate);
   if(jnx_file_path_exists(dirtemplate)) {
     jnx_char *tempdir=jnx_file_random_dir(dirtemplate);
-    if((mkdir(tempdir, S_IRWXU  | S_IRWXG | S_IROTH | S_IXOTH)) != 0) {
+    
+#ifndef _WIN32 || _WIN64
+	if ((mkdir(tempdir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH)) != 0) {
+#else
+	if(CreateDirectory(tempdir,NULL) == 0) {
+#endif 
       JNXLOG(LDEBUG,"jnx_file_mktempdir: Error making temporary directory [%s]\n",strerror(errno));
       *path = NULL;
       free(tempdir);

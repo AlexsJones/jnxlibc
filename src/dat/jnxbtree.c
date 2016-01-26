@@ -17,7 +17,9 @@
  */
 #include <stdlib.h>
 #include <string.h>
+#ifndef _WIN32 || _WIN64
 #include <strings.h>
+#endif
 #include "jnxbtree.h"
 #include "jnxcheck.h"
 jnx_btree_node *new_node(jnx_int32 order, int32_t is_leaf) {

@@ -16,11 +16,15 @@
  * =====================================================================================
  */
 #include <stdlib.h>
+#ifndef _WIN32 || _WIN64
 #include <unistd.h>
+#include <sys/ioctl.h>
+#else
+#include <windows.h>
+#endif
 #include <time.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <sys/ioctl.h>
 #include <string.h>
 #include "jnxterm.h"
 #include "jnxthread.h"
@@ -39,10 +43,17 @@ void text_color(jnx_int32 attr, jnx_int32 fg) {
   printf("%c[%d;%dm", 0x1B, attr, fg + 30);
 }
 jnx_int32 get_width() {
+#ifndef _WIN32 || _WIN64
   struct winsize w;
   ioctl(0, TIOCGWINSZ, &w);
   printf("columns %d\n", w.ws_col);
   return w.ws_col;
+#else
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	int ret;
+	ret = GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+	return csbi.dwSize.X;
+#endif
 }
 void jnx_term_default() {
   printf("%c[0m", 0x1B);

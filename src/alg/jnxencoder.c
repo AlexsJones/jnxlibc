@@ -15,7 +15,11 @@
  *
  * =====================================================================================
  */
+#ifndef _WIN32 || _WIN64
 #include <strings.h>
+#else
+#include <windows.h>
+#endif
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -105,7 +109,11 @@ jnx_uint8 *jnx_encoder_b64_decode(jnx_encoder *e, jnx_uint8 *data,size_t input_l
   if (data[input_length - 2] == '=') (*output_length)--;
 
   unsigned char *decoded_data = calloc(*output_length, sizeof(unsigned char));
+#ifndef _WIN32 || _WIN64
   bzero(decoded_data,*output_length);
+#else
+  memset(decoded_data, 0, *output_length);
+#endif
   if (decoded_data == NULL) return NULL;
 
   jnx_uint32 i,j;

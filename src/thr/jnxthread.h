@@ -21,11 +21,17 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#ifndef _WIN32 || _WIN64
 #include <pthread.h>
+#else
+#include <windows.h>
+#endif
+
+
   typedef struct jnx_thread_attributes{
     //platform specific zone//
     jnx_int32 has_custom_attr;
-    pthread_attr_t *system_attributes;
+  //  pthread_attr_t *system_attributes;
     //platform specific zone//
   }jnx_thread_attributes;
 
@@ -36,13 +42,21 @@ extern "C" {
     void *args;
     jnx_thread_attributes *attributes;
     //platform specific zone//
+#ifndef _WIN32 || _WIN64
     pthread_t system_thread;
+#else
+	HANDLE system_thread;
+#endif
     //platform specific zone//
   }jnx_thread;
 
   typedef struct jnx_thread_mutex{
     //platform specific zone//
+#ifndef _WIN32 || _WIN64
     pthread_mutex_t system_mutex;
+#else
+	  HANDLE system_mutex;
+#endif
     //platform specific zone//
     jnx_int32 is_initialized;
   }jnx_thread_mutex;
@@ -58,14 +72,21 @@ extern "C" {
    *@brief blocking function that will wait for the mutex to unlock
    *@param jnx_thread_mutex to lock
    */
-  void jnx_thread_lock(jnx_thread_mutex *m);
+#ifndef _WIN32 || _WIN64
+  void
+#else
+  HANDLE
+#endif 
+	  jnx_thread_lock(jnx_thread_mutex *m);
   /**
    *@fn jnx_int32 jnx_thread_trylock
    *@brief tries to lock a mutex, returns error code on failure or 0 on success
    *@param jnx_thread_mutex mutex to lock
    *@return jnx_int32 errorcode 0 on success
    */
+#ifndef _WIN32 || _WIN64
   jnx_int32 jnx_thread_trylock(jnx_thread_mutex *m);
+#endif
   /**
    *@fn jnx_thread* jnx_thread_create(entry_point e,void *args)
    *@param entry_point is the function pojnx_int32er the thread starts with
@@ -73,7 +94,13 @@ extern "C" {
    *@brief jnx_thread_create will create and start a new thread, adding to the pool
    *@return jnx_thread object
    */
-  jnx_thread* jnx_thread_create(entry_point e,void *args);
+  jnx_thread* jnx_thread_create(
+#ifndef _WIN32 || _WIN64
+	  entry_point e,
+#else
+	  LPTHREAD_START_ROUTINE e,
+#endif
+	  void *args);
   /**
    *@fn jnx_int32 jnx_thread_create_disposable(entry_point e,void *args)
    *@param entry_point is the function pojnx_int32er the thread starts with
@@ -81,7 +108,13 @@ extern "C" {
    *@brief jnx_thread_create will create and start a new thread but does not add to pool
    *@return error code if any
    */
-  jnx_int32 jnx_thread_create_disposable(entry_point e,void *args);
+  jnx_int32 jnx_thread_create_disposable(
+#ifndef _WIN32 || _WIN64
+	  entry_point e,
+#else
+	  LPTHREAD_START_ROUTINE e,
+#endif
+	  void *args);
   /**
    *@fn void jnx_thread_destroy(jnx_thread *thr)
    *@brief Destroy the thread data structure and pool listing
