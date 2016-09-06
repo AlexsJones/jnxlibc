@@ -77,6 +77,7 @@ static void test_udp_listener() {
     jnx_socket_udp_listener_tick(listener,test_udp_listener_callback,NULL);
     if(test_udp_listener_complete)break;
     ++x;
+    sleep(.5);
   }
   jnx_socket_udp_listener_destroy(&listener);
   JNXCHECK(test_udp_listener_complete);
@@ -91,6 +92,7 @@ static void test_udp_listener_ipv6() {
     jnx_socket_udp_listener_tick(listener,test_udp_listener_callback,NULL);
     if(test_udp_listener_complete)break;
     ++x;
+    sleep(.5);
   }
   jnx_socket_udp_listener_destroy(&listener);
   JNXCHECK(test_udp_listener_complete);
