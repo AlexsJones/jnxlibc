@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 2.8)
 project(jnxlibc)
-
 set(SOURCE "")
 set(HEADERS "")
-
+if(APPLE)
+set(CMAKE_MACOSX_RPATH 1)
+endif()
 add_subdirectory(src/alg)
 add_subdirectory(src/bug)
 add_subdirectory(src/dat)
