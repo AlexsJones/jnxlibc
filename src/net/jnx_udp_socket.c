@@ -14,7 +14,9 @@
 #include <fcntl.h>
 #ifndef IFNAMSIZ
 #include <net/if.h>
+#ifndef __APPLE__
 #define IFNAMSIZ IF_NAMESIZE
+#endif
 #endif
 #include <sys/param.h>
 #include <sys/wait.h>

@@ -2,15 +2,15 @@
  *     File Name           :     jnxlog.h
  *     Created By          :     tibbar
  *     Creation Date       :     [2015-05-14 14:01]
- *     Last Modified       :     [2016-07-25 15:52]
+ *     Last Modified       :     [2016-12-17 12:47]
  *     Description         :      
  **********************************************************************************/
 #ifndef __JNXLOG_H__
 #define __JNXLOG_H__
-#include "jnx_types.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
+#include "jnx_types.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -26,7 +26,6 @@ extern "C" {
 #define LPANIC 4
 #define MAX_SIZE 2048
 #define TIMEBUFFER 256
-#ifndef RELEASE
   FILE *JNXLOG_OUTPUT_FP;
   static inline void jnx_log(jnx_int l,const jnx_char *file, 
       const jnx_char *function, 
@@ -74,6 +73,7 @@ extern "C" {
   static inline void jnx_log_set_output(FILE *fp) {
     JNXLOG_OUTPUT_FP = fp;
   }
+#ifndef RELEASE
 #define JNXLOG(LEVEL,FORMATTER, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__);
 #define JNX_LOG(LEVEL,FORMATTER, ...) jnx_log(LEVEL,__FILE__,__FUNCTION__,__LINE__,FORMATTER, ## __VA_ARGS__);
 #define JNXLOG_OUTPUT_REDIRECT_START(FP) jnx_log_set_output(FP);
