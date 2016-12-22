@@ -50,8 +50,6 @@ void print_usage() {
   printf("\n");
 }
 
-FILE *JNXLOG_OUTPUT_FP = NULL;
-
 int main(int argc, char **argv) {
 
 #if SILENT_LOGGING

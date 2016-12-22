@@ -76,9 +76,8 @@ static void test_udp_listener() {
   while(x < 20) {
     jnx_socket_udp_listener_tick(listener,test_udp_listener_callback,NULL);
     if(test_udp_listener_complete)break;
-    sleep(.5);
+    sleep(1);
     ++x;
-    sleep(.5);
   }
   jnx_socket_udp_listener_destroy(&listener);
   JNXCHECK(test_udp_listener_complete);
