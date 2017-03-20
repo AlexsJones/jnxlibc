@@ -19,14 +19,14 @@
 [Latest travis build](https://travis-ci.org/AlexsJones/jnxlibc/builds)
 
 
-###Quick start
+### Quick start
 Requires: `gcc|llvm & cmake`
 Paste this line into your terminal:
 ```
 git clone https://github.com/AlexsJones/jnxlibc.git && cd jnxlibc && cmake . && make && sudo make install
 ```
 
-#Key features
+# Key features
 - Lightweight data structures with thread-safe API (`hash, list, vector, btree, stack, queue`) 
 - `Socket` implmentation supporting multiple transport and `IPV4/IPV6 (Multicasting,Broadcast,Unicast) TCP/IP & UDP`
 - `Network` utilities (get IP from hostname, resolve hostname from IP, interface to IP), multi-interface listeners, multiplexing server 
@@ -42,7 +42,7 @@ git clone https://github.com/AlexsJones/jnxlibc.git && cd jnxlibc && cmake . && 
 - Almost total test coverage (Unit tests/ Performance tests)
 - Armv7 framework version available [Here](https://github.com/AlexsJones/jnxlibc_ios)
 
-#Documentation & Examples
+# Documentation & Examples
 
 - First port of call: [Wiki](https://github.com/AlexsJones/jnxlibc/wiki/A-library-tour)
 - MAN  docs/man
@@ -50,14 +50,14 @@ git clone https://github.com/AlexsJones/jnxlibc.git && cd jnxlibc && cmake . && 
 - [Loads of lovely tests in C!](test)
 - Code reviewing
 
-#Installation
+# Installation
 
-###Dependencies
+### Dependencies
 ```
 GCC
 CMake
 ```
-####Currently supported platforms: Linux distributions/OS X (Windows coming soon)
+#### Currently supported platforms: Linux distributions/OS X (Windows coming soon)
 
 
 Default install location
@@ -79,7 +79,7 @@ sudo make install
 Use `-ljnxc` when building your project for shared library
 Use `-ljnxcs` for static library
 
-####Flags
+#### Flags
 
 ```
 cmake . -DRUN_TESTS=ON #To run tests at compile time
@@ -92,7 +92,7 @@ An example command for a release build of the static library might be the follow
 ```
 cmake . -DRUN_TESTS=ON -DRELEASE=ON
 ```
-###Tests
+### Tests
 
 To run tests from root of the project folder
 ```
@@ -102,7 +102,7 @@ To run an individual test
 ```
 ./test/run_tests test_jnxlist.c
 ```
-##Examples
+## Examples
 Listeners that can be manually ticked
 ```C
 void test_tcp_listener_callback(jnx_uint8 *payload,
